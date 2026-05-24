@@ -22,11 +22,15 @@ public class EmailAnalysisService {
 
     public EmailAnalysis analyzeAndSave(EmailAnalysis emailAnalysis) {
 
+    	if (emailAnalysis.getEmail() == null || emailAnalysis.getEmail().isBlank()) {
+            throw new RuntimeException("El email no puede estar vacío");
+        }
+    	
         String email = emailAnalysis.getEmail().toLowerCase();
 
         int riesgo = 0;
 
-        // Reglas básicas
+        // Palabras sospechosas
         if (email.contains("verify")) {
             riesgo += 2;
         }
@@ -47,12 +51,44 @@ public class EmailAnalysisService {
             riesgo += 3;
         }
 
+        if (email.contains("login")) {
+            riesgo += 2;
+        }
+
+        if (email.contains("update")) {
+            riesgo += 2;
+        }
+
+        // Muchos guiones
+        long guiones = email.chars().filter(ch -> ch == '-').count();
+
+        if (guiones >= 2) {
+            riesgo += 2;
+        }
+
+        // Muchos números
+        long numeros = email.chars().filter(Character::isDigit).count();
+
+        if (numeros >= 4) {
+            riesgo += 2;
+        }
+
+        // Dominios sospechosos
+        if (email.endsWith(".ru") ||
+            email.endsWith(".xyz") ||
+            email.endsWith(".tk")) {
+
+            riesgo += 3;
+        }
+
         // Resultado final
         String resultado;
 
-        if (riesgo >= 5) {
-            resultado = "Posible phishing";
-        } else {
+        if (riesgo >= 10) {
+            resultado = "probable phishing";
+        } else if (riesgo >= 5){
+        	resultado = "Posible phishing";
+        }else {
             resultado = "Seguro";
         }
 
