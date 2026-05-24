@@ -21,7 +21,28 @@ public class EmailAnalysisController {
     public List<EmailAnalysis> getAll() {
         return service.getAll();
     }
+    
+    @GetMapping("/{id}")
+    public EmailAnalysis getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
+    
+    @DeleteMapping("/{id}")
+    public String deleteById(@PathVariable Long id) {
 
+        service.deleteById(id);
+
+        return "Análisis eliminado correctamente";
+    }
+    
+    @PutMapping("/{id}")
+    public EmailAnalysis update(
+            @PathVariable Long id,
+            @RequestBody EmailAnalysis emailAnalysis) {
+
+        return service.update(id, emailAnalysis);
+    }
+    
     @PostMapping
     public EmailAnalysis analyzeEmail(@RequestBody EmailAnalysis emailAnalysis) {
         return service.analyzeAndSave(emailAnalysis);
