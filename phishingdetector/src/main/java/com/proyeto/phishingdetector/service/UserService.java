@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.proyeto.phishingdetector.model.User;
 import com.proyeto.phishingdetector.repository.UserRepository;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -17,6 +18,8 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private static final String EMAIL_REGEX =
+            "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     
     public List<User> getAllUsers() {
         return repository.findAll();
@@ -72,28 +75,59 @@ public class UserService {
     
     public User register(User user) {
 
-        if (user.getUsername() == null || user.getUsername().isBlank()) {
+        if (user.getUsername() == null ||
+            user.getEmail() == null ||
+            user.getPassword() == null ||
+            user.getRole() == null) {
+
+            throw new RuntimeException("Todos los campos son obligatorios");
+        }
+
+
+        user.setUsername(user.getUsername().trim());
+
+        user.setEmail(user.getEmail().trim().toLowerCase());
+
+        user.setPassword(user.getPassword().trim());
+
+        user.setRole(user.getRole().trim().toUpperCase());
+
+
+        if (user.getUsername().isBlank()) {
             throw new RuntimeException("El username es obligatorio");
         }
 
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
+        if (user.getEmail().isBlank()) {
             throw new RuntimeException("El email es obligatorio");
         }
 
-        if (!user.getEmail().contains("@")) {
-            throw new RuntimeException("El email no es válido");
-        }
-
-        if (user.getPassword() == null || user.getPassword().isBlank()) {
+        if (user.getPassword().isBlank()) {
             throw new RuntimeException("La contraseña es obligatoria");
         }
 
-        if (user.getPassword().length() < 6) {
-            throw new RuntimeException("La contraseña debe tener al menos 6 caracteres");
+        if (user.getRole().isBlank()) {
+            throw new RuntimeException("El rol es obligatorio");
         }
 
-        if (user.getRole() == null || user.getRole().isBlank()) {
-            throw new RuntimeException("El rol es obligatorio");
+        if (user.getUsername().length() > 50) {
+            throw new RuntimeException("El username es demasiado largo");
+        }
+
+        if (user.getEmail().length() > 100) {
+            throw new RuntimeException("El email es demasiado largo");
+        }
+
+        if (user.getPassword().length() > 100) {
+            throw new RuntimeException("La contraseña es demasiado larga");
+        }
+
+        if (!Pattern.matches(EMAIL_REGEX, user.getEmail())) {
+            throw new RuntimeException("El email no es válido");
+        }
+
+        if (user.getPassword().length() < 6) {
+            throw new RuntimeException(
+                    "La contraseña debe tener al menos 6 caracteres");
         }
 
         if (!user.getRole().equals("USER")
@@ -106,7 +140,9 @@ public class UserService {
             throw new RuntimeException("El email ya está registrado");
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(
+                passwordEncoder.encode(user.getPassword())
+        );
 
         return repository.save(user);
     }
