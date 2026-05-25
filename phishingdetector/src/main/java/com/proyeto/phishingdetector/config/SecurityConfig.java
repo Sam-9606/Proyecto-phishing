@@ -40,10 +40,13 @@ public class SecurityConfig {
 
                 		.requestMatchers("/api/users/register")
                 		.hasRole("ADMIN")
+                		
+                		.requestMatchers("/api/users/**")
+                		.hasRole("ADMIN")
 
                         .requestMatchers("/api/emails/**")
                         .hasAnyRole("USER", "ADMIN")
-
+                        
                         .anyRequest()
                         .authenticated()
                         )
