@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.proyeto.phishingdetector.model.User;
 import com.proyeto.phishingdetector.service.UserService;
+import com.proyeto.phishingdetector.dto.PasswordUpdateRequest;
 
 
 @RestController
@@ -79,6 +80,26 @@ public class UserController {
 
             return ResponseEntity.ok(
                     service.updatePassword(id, newPassword));
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
+    
+    @PutMapping("/password")
+    public ResponseEntity<?> updatePassword(
+            @RequestBody PasswordUpdateRequest request) {
+
+        try {
+
+            return ResponseEntity.ok(
+                    service.updatePasswordByEmail(
+                            request.getEmail(),
+                            request.getNewPassword()
+                    ));
 
         } catch (RuntimeException e) {
 

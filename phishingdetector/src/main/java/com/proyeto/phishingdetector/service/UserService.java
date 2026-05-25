@@ -51,6 +51,25 @@ public class UserService {
         return repository.save(user);
     }
     
+    public User updatePasswordByEmail(String email, String newPassword) {
+
+        User user = repository.findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("Usuario no encontrado"));
+
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new RuntimeException("La nueva contraseña es obligatoria");
+        }
+
+        if (newPassword.length() < 6) {
+            throw new RuntimeException("La contraseña debe tener al menos 6 caracteres");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        return repository.save(user);
+    }
+    
     public User register(User user) {
 
         if (user.getUsername() == null || user.getUsername().isBlank()) {
