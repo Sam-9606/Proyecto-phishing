@@ -44,6 +44,36 @@ public class UserService {
     
     public User register(User user) {
 
+        if (user.getUsername() == null || user.getUsername().isBlank()) {
+            throw new RuntimeException("El username es obligatorio");
+        }
+
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
+            throw new RuntimeException("El email es obligatorio");
+        }
+
+        if (!user.getEmail().contains("@")) {
+            throw new RuntimeException("El email no es válido");
+        }
+
+        if (user.getPassword() == null || user.getPassword().isBlank()) {
+            throw new RuntimeException("La contraseña es obligatoria");
+        }
+
+        if (user.getPassword().length() < 6) {
+            throw new RuntimeException("La contraseña debe tener al menos 6 caracteres");
+        }
+
+        if (user.getRole() == null || user.getRole().isBlank()) {
+            throw new RuntimeException("El rol es obligatorio");
+        }
+
+        if (!user.getRole().equals("USER")
+                && !user.getRole().equals("ADMIN")) {
+
+            throw new RuntimeException("Rol inválido");
+        }
+
         if (repository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("El email ya está registrado");
         }
