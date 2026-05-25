@@ -53,6 +53,23 @@ public class UserController {
         }
     }
     
+    @DeleteMapping("/email/{email}")
+    public ResponseEntity<?> deleteUserByEmail(@PathVariable String email) {
+
+        try {
+
+            service.deleteUserByEmail(email);
+
+            return ResponseEntity.ok("Usuario eliminado correctamente");
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
+    
     @PutMapping("/{id}/password")
     public ResponseEntity<?> updatePassword(
             @PathVariable Long id,

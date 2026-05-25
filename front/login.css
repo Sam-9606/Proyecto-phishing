@@ -1,0 +1,3 @@
+body { background-color: #f4f7fe; } 
+.auth-card { background: #ffffff; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.04); border: none; max-width: 450px; }
+.transition-fade { transition: all 0.3s ease-in-out; }

@@ -1,0 +1,15 @@
+/* Estilos generales de la aplicación e-phish */
+body { 
+    background-color: #f4f7fe; 
+} 
+
+.analyzer-card { 
+    background: #ffffff; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03); 
+    border: none; 
+}
+
+.flag-item { 
+    transition: all 0.3s ease; 
+}

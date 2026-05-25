@@ -156,7 +156,9 @@ public class EmailAnalysisService {
         // Resultado final
         String resultado;
 
-        if (riesgo >= 5) {
+        if (riesgo >= 8) {
+            resultado = "Probable phishing";
+        } else if (riesgo >= 5) {
             resultado = "Posible phishing";
         } else {
             resultado = "Seguro";

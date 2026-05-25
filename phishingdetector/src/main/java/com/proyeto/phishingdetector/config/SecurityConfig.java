@@ -6,14 +6,17 @@ import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-
 import org.springframework.security.config.http.SessionCreationPolicy;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.Customizer;
+
+// 🌟 IMPORTACIONES NUEVAS PARA CORS:
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.List;
 
 import com.proyeto.phishingdetector.security.CustomUserDetailsService;
 
@@ -31,27 +34,21 @@ public class SecurityConfig {
             throws Exception {
 
         http
+                // Busca el Bean corsConfigurationSource() definido abajo
+                .cors(Customizer.withDefaults()) 
+                
                 .csrf(csrf -> csrf.disable())
 
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-
-                		.requestMatchers("/api/users/register")
-                		.hasRole("ADMIN")
-                		
-                		.requestMatchers("/api/users/**")
-                		.hasRole("ADMIN")
-
-                        .requestMatchers("/api/emails/**")
-                        .hasAnyRole("USER", "ADMIN")
-                        
-                        .anyRequest()
-                        .authenticated()
-                        )
-
-                        .httpBasic(httpBasic -> {});
+                        .requestMatchers("/api/users/register").hasRole("ADMIN")
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/emails/**").hasAnyRole("USER", "ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults()); 
 
         return http.build();
     }
@@ -62,5 +59,19 @@ public class SecurityConfig {
             throws Exception {
 
         return config.getAuthenticationManager();
+    }
+
+    // 🌟 BEAN DE CONFIGURACIÓN DE CORS (Indispensable para que conecte con la Web):
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        // Permite cualquier origen de forma temporal (luego pondremos el puerto exacto de la web)
+        configuration.setAllowedOrigins(List.of("*")); 
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

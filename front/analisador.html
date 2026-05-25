@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-phish analyzer - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="analisador.css" rel="stylesheet">
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-primary fw-bold" href="index.html">
+                <i class="bi bi-shield-check me-2"></i> e-phish analyzer
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item">
+                        <a class="nav-link active bg-light rounded px-3" href="analisador.html">
+                            <i class="bi bi-search me-1"></i> Analyze
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="emails.html">
+                            <i class="bi bi-list-ul me-1"></i> Email List
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="admin.html" id="adminBtn" class="btn btn-outline-primary btn-sm px-3 fw-semibold">Admin</a>
+                <a href="login.html" id="authBtn" class="btn btn-outline-primary btn-sm px-3 fw-semibold">Log Out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-9 col-lg-8">
+                <div class="card analyzer-card p-4 p-md-5">
+                    
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold text-dark">Analyze an email for phishing risk</h2>
+                    </div>
+
+                    <form id="formAnalyze" class="mb-4">
+                        <div class="mb-3">
+                            <label for="senderEmail" class="form-label small text-muted fw-bold text-uppercase">Sender Email</label>
+                            <input type="email" id="senderEmail" class="form-control bg-light py-2" placeholder="maliciousjhon@phishing.net" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mt-2">
+                            <i class="bi bi-shield-shaded me-2"></i> Run Security Scan
+                        </button>
+                    </form>
+
+                    <hr class="my-4 opacity-25">
+
+                    <div class="row align-items-center mb-2">
+                        <div class="col-sm-6">
+                            <span id="riskBadge" class="badge bg-secondary px-3 py-2 fs-6 mb-2">Awaiting Scan</span>
+                            <div id="threatLevelText" class="fw-bold text-muted">No analysis performed yet</div>
+                        </div>
+                        <div class="col-sm-6 text-sm-end">
+                            <span class="small text-uppercase text-muted fw-bold">Risk Score</span>
+                            <div class="d-flex align-items-center justify-content-sm-end justify-content-center">
+                                <div class="w-100 me-3" style="max-width: 120px;">
+                                    <div class="progress" style="height: 6px;">
+                                        <div id="riskProgressBar" class="progress-bar bg-secondary" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <span id="riskScoreNum" class="fs-1 fw-bold">0</span><span class="text-muted">/100</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="analisador.js"></script>
+</body>
+</html>

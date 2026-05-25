@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-phish analyzer - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="login.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-primary fw-bold" href="index.html">
+                <i class="bi bi-shield-check me-2"></i> e-phish analyzer
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item">
+                        <a class="nav-link active bg-light rounded px-3" href="analisador.html">
+                            <i class="bi bi-search me-1"></i> Analyze
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="emails.html">
+                            <i class="bi bi-list-ul me-1"></i> Email List
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="admin.html" id="adminBtn" class="btn btn-outline-primary btn-sm px-3 fw-semibold">Admin</a>
+                <a href="login.html" id="authBtn" class="btn btn-outline-primary btn-sm px-3 fw-semibold">Log Out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="adminPanel" class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group shadow-sm">
+                <button type="button" class="list-group-item list-group-item-action fw-bold" onclick="showAdminSection('create')">Crear Usuario</button>
+                <button type="button" class="list-group-item list-group-item-action fw-bold" onclick="showAdminSection('delete')">Eliminar Usuario</button>
+                <button type="button" class="list-group-item list-group-item-action fw-bold" onclick="showAdminSection('password')">Cambiar Contraseña</button>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div id="section-create" class="card p-4 shadow-sm">
+                <h3 class="fw-bold text-dark mb-3">Crear nuevo usuario</h3>
+                <form id="formCreateUser">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Full Name</label>
+                        <input type="text" class="form-control" required placeholder="Nombre completo">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Email</label>
+                        <input type="email" class="form-control" required placeholder="usuario@empresa.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Password</label>
+                        <input type="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Crear Usuario</button>
+                </form>
+            </div>
+
+            <div id="section-delete" class="card p-4 shadow-sm d-none">
+                <h3 class="fw-bold text-dark mb-3">Eliminar usuario</h3>
+                <form id="formDeleteUser">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Email del usuario a eliminar</label>
+                        <input type="email" class="form-control" required placeholder="correo@ejemplo.com">
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100">Eliminar permanentemente</button>
+                </form>
+            </div>
+
+            <div id="section-password" class="card p-4 shadow-sm d-none">
+                <h3 class="fw-bold text-dark mb-3">Cambiar contraseña</h3>
+                <form id="formChangePass">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Email del usuario</label>
+                        <input type="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Nueva contraseña</label>
+                        <input type="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100 text-white">Actualizar Contraseña</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="admin.js"></script>.
+    </body>
+</html>
