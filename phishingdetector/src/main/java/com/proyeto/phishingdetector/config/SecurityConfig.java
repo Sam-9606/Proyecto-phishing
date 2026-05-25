@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpMethod;
 
 // 🌟 IMPORTACIONES NUEVAS PARA CORS:
 import org.springframework.web.cors.CorsConfiguration;
@@ -43,9 +44,26 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
+
+                        // aceeso a usuarios solo admins
                         .requestMatchers("/api/users/register").hasRole("ADMIN")
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/emails/**").hasAnyRole("USER", "ADMIN")
+
+                        // correos solo admins
+                        .requestMatchers(HttpMethod.DELETE, "/api/emails/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.PUT, "/api/emails/**")
+                        .hasRole("ADMIN")
+
+                        // correos admins y usuarios
+
+                        .requestMatchers(HttpMethod.GET, "/api/emails/**")
+                        .hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/api/emails/**")
+                        .hasAnyRole("USER", "ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()); 
