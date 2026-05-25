@@ -17,7 +17,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-3">
                     <li class="nav-item">
-                        <a class="nav-link active bg-light rounded px-3" href="analisador.html">
+                        <a class="nav-link" href="analisador.html">
                             <i class="bi bi-search me-1"></i> Analyze
                         </a>
                     </li>
@@ -29,7 +29,7 @@
                 </ul>
             </div>
             <div class="d-flex gap-2">
-                <a href="admin.html" id="adminBtn" class="btn btn-outline-primary btn-sm px-3 fw-semibold">Admin</a>
+                <a href="admin.html" id="adminBtn" class="btn btn-primary btn-sm px-3 fw-semibold">Admin</a>
                 <a href="login.html" id="authBtn" class="btn btn-outline-primary btn-sm px-3 fw-semibold">Log Out</a>
             </div>
         </div>
@@ -51,15 +51,22 @@
                 <form id="formCreateUser">
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted">Full Name</label>
-                        <input type="text" class="form-control" required placeholder="Nombre completo">
+                        <input type="text" id="new-username" class="form-control" required placeholder="Nombre completo">
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted">Email</label>
-                        <input type="email" class="form-control" required placeholder="usuario@empresa.com">
+                        <input type="email" id="new-email" class="form-control" required placeholder="usuario@empresa.com">
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted">Password</label>
-                        <input type="password" class="form-control" required>
+                        <input type="password" id="new-password" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Role</label>
+                        <select id="new-role" class="form-select">
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Crear Usuario</button>
                 </form>
@@ -70,7 +77,7 @@
                 <form id="formDeleteUser">
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted">Email del usuario a eliminar</label>
-                        <input type="email" class="form-control" required placeholder="correo@ejemplo.com">
+                        <input type="email" id="delete-email" class="form-control" required placeholder="correo@ejemplo.com">
                     </div>
                     <button type="submit" class="btn btn-danger w-100">Eliminar permanentemente</button>
                 </form>
@@ -81,11 +88,11 @@
                 <form id="formChangePass">
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted">Email del usuario</label>
-                        <input type="email" class="form-control" required>
+                        <input type="email" id="target-email" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted">Nueva contraseña</label>
-                        <input type="password" class="form-control" required>
+                        <input type="password" id="new-password-change" class="form-control" required>
                     </div>
                     <button type="submit" class="btn btn-warning w-100 text-white">Actualizar Contraseña</button>
                 </form>
