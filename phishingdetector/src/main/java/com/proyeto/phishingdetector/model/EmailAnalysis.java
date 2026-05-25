@@ -21,7 +21,9 @@ public class EmailAnalysis {
 
     private String source;
 
-    private Boolean manualReview;
+    @Column(nullable = false)
+    private Boolean manualReview = false;
+    
 
     public EmailAnalysis() {
     }

@@ -51,9 +51,6 @@ public class EmailAnalysisService {
     
     public EmailAnalysis analyzeAndSave(EmailAnalysis emailAnalysis) {
     	
-    	if (Boolean.TRUE.equals(emailAnalysis.getManualReview())) {
-    	    return repository.save(emailAnalysis);
-    	}
 
         if (emailAnalysis.getEmail() == null || emailAnalysis.getEmail().isBlank()) {
             throw new RuntimeException("El email no puede estar vacío");
@@ -178,12 +175,18 @@ public class EmailAnalysisService {
 
         if (existingAnalysis.isPresent()) {
 
-            // Ya existe → actualizar registro existente
             analysisToSave = existingAnalysis.get();
+
+
+            if (Boolean.TRUE.equals(analysisToSave.getManualReview())) {
+
+                analysisToSave.setFecha(LocalDateTime.now());
+
+                return repository.save(analysisToSave);
+            }
 
         } else {
 
-            // No existe → crear nuevo
             analysisToSave = emailAnalysis;
         }
 
