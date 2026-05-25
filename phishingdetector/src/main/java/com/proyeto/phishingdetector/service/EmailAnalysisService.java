@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmailAnalysisService {
@@ -164,10 +165,27 @@ public class EmailAnalysisService {
             resultado = "Seguro";
         }
 
-        emailAnalysis.setNivelRiesgo(riesgo);
-        emailAnalysis.setResultado(resultado);
-        emailAnalysis.setFecha(LocalDateTime.now());
+        Optional<EmailAnalysis> existingAnalysis =
+                repository.findByEmail(email);
 
-        return repository.save(emailAnalysis);
+        EmailAnalysis analysisToSave;
+
+        if (existingAnalysis.isPresent()) {
+
+            // Ya existe → actualizar registro existente
+            analysisToSave = existingAnalysis.get();
+
+        } else {
+
+            // No existe → crear nuevo
+            analysisToSave = emailAnalysis;
+        }
+
+        analysisToSave.setEmail(email);
+        analysisToSave.setNivelRiesgo(riesgo);
+        analysisToSave.setResultado(resultado);
+        analysisToSave.setFecha(LocalDateTime.now());
+
+        return repository.save(analysisToSave);
     }
 }
