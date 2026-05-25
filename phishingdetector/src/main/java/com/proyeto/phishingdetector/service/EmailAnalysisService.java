@@ -47,7 +47,13 @@ public class EmailAnalysisService {
         return analyzeAndSave(existing);
     }
     
+
+    
     public EmailAnalysis analyzeAndSave(EmailAnalysis emailAnalysis) {
+    	
+    	if (Boolean.TRUE.equals(emailAnalysis.getManualReview())) {
+    	    return repository.save(emailAnalysis);
+    	}
 
         if (emailAnalysis.getEmail() == null || emailAnalysis.getEmail().isBlank()) {
             throw new RuntimeException("El email no puede estar vacío");
@@ -185,7 +191,43 @@ public class EmailAnalysisService {
         analysisToSave.setNivelRiesgo(riesgo);
         analysisToSave.setResultado(resultado);
         analysisToSave.setFecha(LocalDateTime.now());
+        emailAnalysis.setSource("Automatic");
+        emailAnalysis.setManualReview(false);
 
         return repository.save(analysisToSave);
+    }
+    
+    public EmailAnalysis marcarComoSeguro(Long id) {
+
+        EmailAnalysis email = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Análisis no encontrado"));
+
+        email.setResultado("Seguro");
+
+        email.setNivelRiesgo(0);
+
+        email.setSource("MANUAL");
+
+        email.setManualReview(true);
+
+        return repository.save(email);
+    }
+
+    public EmailAnalysis marcarComoPeligroso(Long id) {
+
+        EmailAnalysis email = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Análisis no encontrado"));
+
+        email.setResultado("Probable phishing");
+
+        email.setNivelRiesgo(100);
+
+        email.setSource("MANUAL");
+
+        email.setManualReview(true);
+
+        return repository.save(email);
     }
 }

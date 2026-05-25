@@ -125,21 +125,44 @@ let isAdmin = false;
         </td>
 
         <td>
-            <span class="badge bg-light text-dark border">
-                Automatic
-            </span>
-        </td>
+            <span class="badge ${
+                emailData.source === 'MANUAL'
+                    ? 'bg-warning text-dark'
+                    : 'bg-light text-dark border'
+            }">
+                    ${emailData.source}
+                </span>
+            </td>
 
         ${isAdmin ? `
-            <td class="text-center">
-                <button
-                class="btn btn-sm btn-danger"
-                onclick="deleteAnalysis(${emailData.id})">
+    <td class="text-center">
 
-                <i class="bi bi-trash"></i>
-                </button>
-            </td>
-        ` : ''}
+        <button
+            class="btn btn-sm btn-success"
+            onclick="markSafe(${emailData.id})"
+            title="Mark as Safe">
+
+            <i class="bi bi-flag-fill"></i>
+        </button>
+
+        <button
+            class="btn btn-sm btn-danger"
+            onclick="markDanger(${emailData.id})"
+            title="Mark as Dangerous">
+
+            <i class="bi bi-flag-fill"></i>
+        </button>
+
+        <button
+            class="btn btn-sm btn-danger"
+            onclick="deleteAnalysis(${emailData.id})"
+            title="Delete Analysis">
+
+            <i class="bi bi-trash"></i>
+        </button>
+
+    </td>
+` : ''}
 
     </tr>
 `;
@@ -192,6 +215,76 @@ async function deleteAnalysis(id) {
         } else {
 
             alert('Failed to delete analysis');
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert('Server connection error');
+    }
+}
+
+async function markSafe(id) {
+
+    const authHeaderValue = sessionStorage.getItem('userAuth');
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:8080/api/emails/${id}/safe`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': authHeaderValue
+                }
+            }
+        );
+
+        if (response.ok) {
+
+            alert('Email marked as safe');
+
+            location.reload();
+
+        } else {
+
+            alert('Failed to mark as safe');
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert('Server connection error');
+    }
+}
+
+async function markDanger(id) {
+
+    const authHeaderValue = sessionStorage.getItem('userAuth');
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:8080/api/emails/${id}/danger`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': authHeaderValue
+                }
+            }
+        );
+
+        if (response.ok) {
+
+            alert('Email marked as dangerous');
+
+            location.reload();
+
+        } else {
+
+            alert('Failed to mark as dangerous');
         }
 
     } catch (error) {

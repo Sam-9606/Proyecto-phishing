@@ -45,24 +45,26 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // aceeso a usuarios solo admins
-                        .requestMatchers("/api/users/register").hasRole("ADMIN")
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                		// acceso a usuarios solo admins
+                		.requestMatchers("/api/users/register").hasRole("ADMIN")
 
-                        // correos solo admins
-                        .requestMatchers(HttpMethod.DELETE, "/api/emails/**")
-                        .hasRole("ADMIN")
+                		.requestMatchers("/api/users/**").hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.PUT, "/api/emails/**")
-                        .hasRole("ADMIN")
+                		// DELETE emails -> solo ADMIN
+                		.requestMatchers(HttpMethod.DELETE, "/api/emails/**")
+                		.hasRole("ADMIN")
 
-                        // correos admins y usuarios
+                		// PUT emails -> solo ADMIN
+                		.requestMatchers(HttpMethod.PUT, "/api/emails/**")
+                		.hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.GET, "/api/emails/**")
-                        .hasAnyRole("USER", "ADMIN")
+                		// GET emails -> USER y ADMIN
+                		.requestMatchers(HttpMethod.GET, "/api/emails/**")
+                		.hasAnyRole("USER", "ADMIN")
 
-                        .requestMatchers(HttpMethod.POST, "/api/emails/**")
-                        .hasAnyRole("USER", "ADMIN")
+                		// POST emails -> USER y ADMIN
+                		.requestMatchers(HttpMethod.POST, "/api/emails/**")
+                		.hasAnyRole("USER", "ADMIN")
 
                         .anyRequest().authenticated()
                 )

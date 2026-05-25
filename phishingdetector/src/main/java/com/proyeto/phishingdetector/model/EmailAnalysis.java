@@ -19,6 +19,10 @@ public class EmailAnalysis {
 
     private LocalDateTime fecha;
 
+    private String source;
+
+    private Boolean manualReview;
+
     public EmailAnalysis() {
     }
 
@@ -63,5 +67,21 @@ public class EmailAnalysis {
 
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
+    }
+    
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public Boolean getManualReview() {
+        return manualReview;
+    }
+
+    public void setManualReview(Boolean manualReview) {
+        this.manualReview = manualReview;
     }
 }

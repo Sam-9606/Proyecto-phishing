@@ -86,4 +86,38 @@ public class EmailAnalysisController {
                     .body(e.getMessage());
         }
     }
+    
+    @PutMapping("/{id}/safe")
+    public ResponseEntity<?> marcarSeguro(@PathVariable Long id) {
+
+        try {
+
+            return ResponseEntity.ok(
+                    service.marcarComoSeguro(id)
+            );
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/danger")
+    public ResponseEntity<?> marcarPeligroso(@PathVariable Long id) {
+
+        try {
+
+            return ResponseEntity.ok(
+                    service.marcarComoPeligroso(id)
+            );
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
 }
